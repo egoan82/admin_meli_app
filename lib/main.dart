@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'app/ui/screens/home/home_page.dart';
+import 'app/ui/routes/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,11 +13,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Admin Meli',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: const Color(0xff3A97D5),
+          secondary: const Color(0xff282F3A),
+          background: const Color(0xff282F3A).withOpacity(0.2),
+        ),
       ),
-      home: const HomePage(),
+      routes: appRoutes(),
+      initialRoute: 'home',
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/menu_drawer.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -9,7 +11,9 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home'),
         centerTitle: true,
+        elevation: 0,
       ),
+      drawer: const MenuDrawer(),
     );
   }
 }
