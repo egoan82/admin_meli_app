@@ -1,4 +1,4 @@
-package com.example.admin_meli_app
+package co.malusoft.admin_meli_app
 
 import io.flutter.embedding.android.FlutterActivity
 

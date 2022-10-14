@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.admin_meli_app">
+    package="co.malusoft.admin_meli_app">
    <application
         android:label="admin_meli_app"
         android:name="${applicationName}"
