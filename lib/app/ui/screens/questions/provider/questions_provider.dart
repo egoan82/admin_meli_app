@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class QuestionsProvider with ChangeNotifier {
-  QuestionsProvider() {
-    print("QUESTION PROVIDER CREATED");
-  }
+  QuestionsProvider();
 
   final List<String> _l = [
     'TiendaMajo',
