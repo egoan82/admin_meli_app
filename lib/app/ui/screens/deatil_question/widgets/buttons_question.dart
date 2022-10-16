@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/responsive.dart';
+import '../../../utils/responsive.dart';
 
 class ButtonsQuestion extends StatelessWidget {
   const ButtonsQuestion({

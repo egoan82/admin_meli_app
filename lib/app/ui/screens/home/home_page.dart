@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:admin_meli_app/app/ui/data/local/local_notifications_service.dart';
+import 'package:admin_meli_app/app/data/local/local_notifications_service.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/menu_drawer.dart';

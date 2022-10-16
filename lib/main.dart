@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'app/ui/data/firebase/push_notifications_service.dart';
-import 'app/ui/data/local/local_notifications_service.dart';
+import 'app/data/firebase/push_notifications_service.dart';
+import 'app/data/local/local_notifications_service.dart';
 import 'app/ui/routes/routes.dart';
 
 void main() async {

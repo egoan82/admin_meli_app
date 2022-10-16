@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:admin_meli_app/app/ui/data/firebase/cloud_firestore.dart';
-import 'package:admin_meli_app/app/ui/data/local/local_notifications_service.dart';
+import 'package:admin_meli_app/app/data/firebase/cloud_firestore.dart';
+import 'package:admin_meli_app/app/data/local/local_notifications_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

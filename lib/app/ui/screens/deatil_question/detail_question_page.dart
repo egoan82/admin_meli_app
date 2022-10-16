@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/responsive.dart';
+import '../../utils/responsive.dart';
 import 'widgets/header.dart';
 import 'widgets/question.dart';
 

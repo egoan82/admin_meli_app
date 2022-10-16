@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../utils/responsive.dart';
+import '../../../utils/responsive.dart';
 import 'buttons_question.dart';
-import 'images_product.dart';
 import 'input_answer.dart';
 import 'tags.dart';
 
@@ -45,9 +44,12 @@ class Question extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onTap: () => Share.share(
-                        'https://articulo.mercadolibre.com.co/MCO-654469331-cando30-2390-rodillo-redondo-de-2capas-de-espuma-6-x-_JM',
-                      ),
+                      onTap: () async {
+                        final url = Uri.parse(
+                          'https://articulo.mercadolibre.com.co/MCO-654469331-_JM',
+                        );
+                        await launchUrl(url);
+                      },
                     ),
                     InkWell(
                       child: const Text(
@@ -57,9 +59,11 @@ class Question extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onTap: () => Share.share(
-                        'https://www.amazon.com/dp/B01B8GWKL6',
-                      ),
+                      onTap: () async {
+                        final url =
+                            Uri.parse('https://www.amazon.com/dp/B01B8GWKL6');
+                        await launchUrl(url);
+                      },
                     ),
                   ],
                 ),
