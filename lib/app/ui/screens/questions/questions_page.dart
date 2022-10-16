@@ -105,7 +105,8 @@ class QuestionsPage extends StatelessWidget {
                         ],
                       ),
                       trailing: const Icon(Icons.keyboard_arrow_right_outlined),
-                      onTap: () {},
+                      onTap: () =>
+                          Navigator.pushNamed(context, 'detailquestion'),
                     );
                   },
                 ),
