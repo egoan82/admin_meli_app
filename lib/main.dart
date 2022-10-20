@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 
 import 'app/data/firebase/push_notifications_service.dart';
 import 'app/data/local/local_notifications_service.dart';
+import 'app/inject.dart';
 import 'app/ui/routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await injectDependencies();
   await PushNotificationService.initializeApp();
 
   runApp(const MyApp());
@@ -63,7 +65,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey, // Navegar
       scaffoldMessengerKey: messengerKey, // Snacks
       routes: appRoutes(),
-      initialRoute: 'home',
+      initialRoute: 'login',
     );
   }
 }
