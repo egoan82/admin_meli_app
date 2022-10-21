@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:admin_meli_app/app/ui/screens/home/provider/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/fonts.dart';
 import '../../../utils/responsive.dart';
@@ -64,6 +68,33 @@ class MenuDrawer extends StatelessWidget {
               Navigator.pushNamed(context, 'questions');
             },
           ),
+          const Spacer(),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.logout),
+            label: const Text('Salir'),
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(
+                EdgeInsets.symmetric(
+                  horizontal: size.wp(10),
+                ),
+              ),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            onPressed: () async {
+              await Provider.of<HomeProvider>(
+                context,
+                listen: false,
+              ).logout();
+
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'login',
+                (route) => false,
+              );
+            },
+          )
         ],
       ),
     );

@@ -54,10 +54,18 @@ class AuthenticationAPI {
 
   Future<Tuple2<RequestResponse, String>> refreshToken(
     String token,
+    String user,
   ) async {
     final result = await _http.request<String>(
-      '/login/newToken/$token',
-      method: HttpMethod.get,
+      '/refrescarToken',
+      method: HttpMethod.post,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "Authorization": "Bearer $token",
+      },
+      body: {
+        'user': user,
+      },
       parser: (data) {
         final json = jsonDecode(data);
         return json['token'];
@@ -86,10 +94,18 @@ class AuthenticationAPI {
 
   Future<Tuple2<RequestResponse, String>> validateToken(
     String token,
+    String user,
   ) async {
     final result = await _http.request<String>(
-      '/login/validateToken/$token',
-      method: HttpMethod.get,
+      '/validarToken',
+      method: HttpMethod.post,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "Authorization": "Bearer $token",
+      },
+      body: {
+        'user': user,
+      },
       parser: (data) {
         return data;
       },

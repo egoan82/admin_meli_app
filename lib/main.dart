@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey, // Navegar
       scaffoldMessengerKey: messengerKey, // Snacks
       routes: appRoutes(),
-      initialRoute: 'login',
+      initialRoute: 'splash',
     );
   }
 }

@@ -7,7 +7,13 @@ abstract class AuthenticationRepository {
     String user,
     String password,
   );
-  Future<Tuple2<RequestResponse, String>> refreshToken(String token);
-  Future<Tuple2<RequestResponse, String>> validateToken(String token);
+  Future<Tuple2<RequestResponse, String>> refreshToken(
+    String token,
+    String user,
+  );
+  Future<Tuple2<RequestResponse, String>> validateToken(
+    String token,
+    String user,
+  );
   Future<void> logout();
 }

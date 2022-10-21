@@ -34,6 +34,7 @@ class AuthenticationClient {
 
       final result = await _apiRest.validateToken(
         session.token,
+        session.user,
       );
 
       if (result.item1 == RequestResponse.ok) {
@@ -64,6 +65,7 @@ class AuthenticationClient {
 
         final result = await _apiRest.refreshToken(
           session.token,
+          session.user,
         );
 
         if (result.item1 == RequestResponse.ok) {

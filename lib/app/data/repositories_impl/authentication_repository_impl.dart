@@ -25,14 +25,26 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Tuple2<RequestResponse, String>> refreshToken(String token) async {
-    final result = await _api.refreshToken(token);
+  Future<Tuple2<RequestResponse, String>> refreshToken(
+    String token,
+    String user,
+  ) async {
+    final result = await _api.refreshToken(
+      token,
+      user,
+    );
     return result;
   }
 
   @override
-  Future<Tuple2<RequestResponse, String>> validateToken(String token) async {
-    final result = await _api.refreshToken(token);
+  Future<Tuple2<RequestResponse, String>> validateToken(
+    String token,
+    String user,
+  ) async {
+    final result = await _api.refreshToken(
+      token,
+      user,
+    );
     return result;
   }
 

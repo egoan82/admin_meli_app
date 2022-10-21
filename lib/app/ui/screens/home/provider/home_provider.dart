@@ -24,4 +24,8 @@ class HomeProvider with ChangeNotifier {
     _session = s;
     notifyListeners();
   }
+
+  Future<void> logout() async {
+    await _sessionController.logout();
+  }
 }
