@@ -51,7 +51,7 @@ class Http {
         timeOut: timeOut,
       );
 
-      Logger.i.warning(response.body);
+      // Logger.i.warning(response.body);
       statusCode = response.statusCode;
       // Logger.i.warning(statusCode.toString());
 

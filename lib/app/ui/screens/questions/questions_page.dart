@@ -1,8 +1,10 @@
+import 'package:admin_meli_app/app/ui/utils/date_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/models/questions_store_model.dart';
+import '../../utils/color_reputation.dart';
 import '../../utils/fonts.dart';
 import '../../utils/responsive.dart';
 import 'provider/questions_provider.dart';
@@ -96,10 +98,11 @@ class QuestionsPage extends StatelessWidget {
                                               Container(
                                                 height: double.infinity,
                                                 width: 6,
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.green,
+                                                decoration: BoxDecoration(
+                                                  color: ColorReputation.color(
+                                                      e.reputation),
                                                   borderRadius:
-                                                      BorderRadius.only(
+                                                      const BorderRadius.only(
                                                     topLeft: Radius.circular(4),
                                                     bottomLeft:
                                                         Radius.circular(4),
@@ -182,32 +185,102 @@ class QuestionsPage extends StatelessWidget {
                             itemCount: listQuestions.length,
                             itemBuilder: (context, index) {
                               final q = listQuestions[index];
-                              return ListTile(
-                                leading: Image.network(q.thumbnail),
-                                title: Text(
-                                  q.text,
-                                  overflow: TextOverflow.ellipsis,
+
+                              // return ListTile(
+                              //   leading: Image.network(q.thumbnail),
+                              //   title: Text(
+                              //     q.text,
+                              //     overflow: TextOverflow.ellipsis,
+                              //   ),
+                              //   subtitle: Row(
+                              //     children: [
+                              //       Selector<QuestionsProvider, String>(
+                              //         selector: (_, c) => c.store,
+                              //         builder: (_, store, __) {
+                              //           return Text(store);
+                              //         },
+                              //       ),
+                              //       const Spacer(),
+                              //       Text(
+                              //         DateFormat('yyyy-MM-dd hh:mm a').format(
+                              //             DateCustom.date(q.dateCreated)),
+                              //         style: TextStyle(fontSize: size.dp(1)),
+                              //       ),
+                              //     ],
+                              //   ),
+                              //   trailing: const Icon(
+                              //       Icons.keyboard_arrow_right_outlined),
+                              //   onTap: () => Navigator.pushNamed(
+                              //       context, 'detailquestion'),
+                              // );
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
                                 ),
-                                subtitle: Row(
-                                  children: [
-                                    Selector<QuestionsProvider, String>(
-                                      selector: (_, c) => c.store,
-                                      builder: (_, store, __) {
-                                        return Text(store);
-                                      },
+                                child: SizedBox(
+                                  height: size.hp(10),
+                                  width: size.wp(60),
+                                  child: Card(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: size.hp(8),
+                                          child: Image.network(
+                                            q.thumbnail,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        SizedBox(width: size.wp(4)),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height: size.hp(2)),
+                                              Text(
+                                                q.text,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              const Spacer(),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  right: size.wp(2),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Selector<QuestionsProvider,
+                                                        String>(
+                                                      selector: (_, c) =>
+                                                          c.store,
+                                                      builder: (_, store, __) {
+                                                        return Text(store);
+                                                      },
+                                                    ),
+                                                    Text(
+                                                      DateFormat(
+                                                              'yyyy-MM-dd hh:mm a')
+                                                          .format(
+                                                              DateCustom.date(q
+                                                                  .dateCreated)),
+                                                      style: TextStyle(
+                                                        fontSize: size.dp(1.2),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(height: size.hp(1)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const Spacer(),
-                                    Text(
-                                      DateFormat('yyyy-M-d hh:mm:ss a')
-                                          .format(q.dateCreated),
-                                      style: TextStyle(fontSize: size.dp(1)),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                                trailing: const Icon(
-                                    Icons.keyboard_arrow_right_outlined),
-                                onTap: () => Navigator.pushNamed(
-                                    context, 'detailquestion'),
                               );
                             },
                           );

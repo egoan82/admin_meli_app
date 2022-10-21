@@ -11,12 +11,14 @@ class QuestionsStore {
     required this.total,
     required this.questions,
     required this.thumbnail,
+    required this.reputation,
   });
 
   final String name;
   final int total;
   final List<Question> questions;
   final String thumbnail;
+  final String reputation;
 
   factory QuestionsStore.fromJson(Map<String, dynamic> json) => QuestionsStore(
         name: json["name"] ?? '',
@@ -26,6 +28,7 @@ class QuestionsStore {
             : List<Question>.from(
                 json["questions"].map((x) => Question.fromJson(x))),
         thumbnail: json["thumbnail"] ?? '',
+        reputation: json["reputation"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +36,7 @@ class QuestionsStore {
         "total": total,
         "questions": questions,
         "thumbnail": thumbnail,
+        "reputation": reputation,
       };
 }
 
@@ -52,7 +56,7 @@ class Question {
     required this.thumbnail,
   });
 
-  final DateTime dateCreated;
+  final String dateCreated;
   final String itemId;
   final int sellerId;
   final String status;
@@ -66,9 +70,8 @@ class Question {
   final String thumbnail;
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
-        dateCreated: json["date_created"] == null
-            ? DateTime.now()
-            : DateTime.parse(json["date_created"]),
+        dateCreated:
+            json["date_created"] == null ? '' : json["date_created"].toString(),
         itemId: json["item_id"] ?? 'No registro',
         sellerId: json["seller_id"] ?? 0,
         status: json["status"] ?? ' No registro',
@@ -85,7 +88,7 @@ class Question {
       );
 
   Map<String, dynamic> toJson() => {
-        "date_created": dateCreated.toIso8601String(),
+        "date_created": dateCreated,
         "item_id": itemId,
         "seller_id": sellerId,
         "status": status,

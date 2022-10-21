@@ -115,8 +115,6 @@ class QuestionsProvider with ChangeNotifier {
     if (result.item1 == RequestResponse.ok) {
       final json = jsonDecode(result.item2);
 
-      print(result.item2);
-
       final list = List.from(json)
           .map(
             (e) => QuestionsStore.fromJson(e),
