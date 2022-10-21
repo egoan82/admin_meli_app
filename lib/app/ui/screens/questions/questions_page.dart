@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../domain/models/questions_store_model.dart';
 import '../../utils/fonts.dart';
 import '../../utils/responsive.dart';
 import 'provider/questions_provider.dart';
@@ -27,7 +28,10 @@ class QuestionsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: EdgeInsets.only(
+                  left: size.wp(4),
+                  top: size.hp(1.6),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,13 +48,18 @@ class QuestionsPage extends StatelessWidget {
                         SizedBox(width: size.wp(1)),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(
-                            "(9)",
-                            style: TextStyle(
-                              fontSize: size.dp(1.8),
-                              color: Colors.black54,
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                          child: Selector<QuestionsProvider, int>(
+                            selector: (_, c) => c.totalStores,
+                            builder: (_, totalStores, __) {
+                              return Text(
+                                "($totalStores)",
+                                style: TextStyle(
+                                  fontSize: size.dp(1.8),
+                                  color: Colors.black54,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -60,82 +69,97 @@ class QuestionsPage extends StatelessWidget {
                 ),
               ),
               // SizedBox(height: size.hp(1)),
-              Expanded(
-                flex: 2,
-                child: Selector<QuestionsProvider, List<Map<String, dynamic>>>(
-                  selector: (_, c) => c.listShops,
-                  builder: (_, listShops, __) {
-                    return (listShops.isEmpty)
+              SizedBox(
+                height: size.hp(30),
+                child: Selector<QuestionsProvider, List<QuestionsStore>?>(
+                  selector: (_, c) => c.questions,
+                  builder: (_, questions, __) {
+                    return (questions == null)
                         ? const SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GridView.count(
-                              childAspectRatio: 1.4,
-                              crossAxisCount: 4,
-                              children: listShops
-                                  .map(
-                                    (e) => Card(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: double.infinity,
-                                            width: 6,
-                                            decoration: BoxDecoration(
-                                              color: e['color'],
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                topLeft: Radius.circular(4),
-                                                bottomLeft: Radius.circular(4),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  width: size.wp(16),
-                                                  child: Text(
-                                                    e['name'],
-                                                    style: TextStyle(
-                                                      fontSize: size.dp(1.2),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    overflow: TextOverflow.fade,
-                                                    maxLines: 1,
-                                                    softWrap: false,
+                        : Builder(
+                            builder: (context) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GridView.count(
+                                childAspectRatio: 1.2,
+                                crossAxisCount: 4,
+                                children: questions
+                                    .map(
+                                      (e) => InkWell(
+                                        onTap: () =>
+                                            Provider.of<QuestionsProvider>(
+                                          context,
+                                          listen: false,
+                                        ).setlistQuestions(e.name),
+                                        child: Card(
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                height: double.infinity,
+                                                width: 6,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.green,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft: Radius.circular(4),
+                                                    bottomLeft:
+                                                        Radius.circular(4),
                                                   ),
                                                 ),
-                                                SizedBox(height: size.hp(1)),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
                                                   children: [
-                                                    Image.network(
-                                                      e['picture'],
-                                                      height: size.hp(3),
-                                                    ),
-                                                    SizedBox(width: size.wp(1)),
-                                                    Text(
-                                                      e['name']
-                                                          .length
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        fontSize: size.dp(2),
+                                                    SizedBox(
+                                                      width: size.wp(16),
+                                                      child: Text(
+                                                        e.name,
+                                                        style: TextStyle(
+                                                          fontSize:
+                                                              size.dp(1.2),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                        maxLines: 1,
+                                                        softWrap: false,
                                                       ),
+                                                    ),
+                                                    SizedBox(
+                                                        height: size.hp(1)),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Image.network(
+                                                          e.thumbnail,
+                                                          height: size.hp(3),
+                                                        ),
+                                                        SizedBox(
+                                                            width: size.wp(1)),
+                                                        Text(
+                                                          e.questions.length
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                size.dp(2),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
+                                    )
+                                    .toList(),
+                              ),
                             ),
                           );
                   },
@@ -149,27 +173,59 @@ class QuestionsPage extends StatelessWidget {
               SizedBox(height: size.hp(1)),
               Expanded(
                 flex: 3,
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text('Pregunta $index'),
-                      subtitle: Row(
-                        children: [
-                          const Text('NombreTienda'),
-                          const Spacer(),
-                          Text(DateFormat("yyyy-MM-dd h:mm:ss a")
-                              .format(DateTime.now())),
-                        ],
-                      ),
-                      trailing: const Icon(Icons.keyboard_arrow_right_outlined),
-                      onTap: () =>
-                          Navigator.pushNamed(context, 'detailquestion'),
-                    );
+                child: Selector<QuestionsProvider, List<Question>?>(
+                  selector: (_, c) => c.listQuestions,
+                  builder: (_, listQuestions, __) {
+                    return (listQuestions == null)
+                        ? const SizedBox()
+                        : ListView.builder(
+                            itemCount: listQuestions.length,
+                            itemBuilder: (context, index) {
+                              final q = listQuestions[index];
+                              return ListTile(
+                                leading: Image.network(q.thumbnail),
+                                title: Text(
+                                  q.text,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Row(
+                                  children: [
+                                    Selector<QuestionsProvider, String>(
+                                      selector: (_, c) => c.store,
+                                      builder: (_, store, __) {
+                                        return Text(store);
+                                      },
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      DateFormat('yyyy-M-d hh:mm:ss a')
+                                          .format(q.dateCreated),
+                                      style: TextStyle(fontSize: size.dp(1)),
+                                    ),
+                                  ],
+                                ),
+                                trailing: const Icon(
+                                    Icons.keyboard_arrow_right_outlined),
+                                onTap: () => Navigator.pushNamed(
+                                    context, 'detailquestion'),
+                              );
+                            },
+                          );
                   },
                 ),
               ),
             ],
+          ),
+        ),
+        floatingActionButton: Builder(
+          builder: (context) => FloatingActionButton(
+            child: const Icon(Icons.refresh),
+            onPressed: () {
+              Provider.of<QuestionsProvider>(
+                context,
+                listen: false,
+              ).getQuestions();
+            },
           ),
         ),
       ),

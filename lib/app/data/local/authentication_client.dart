@@ -28,7 +28,7 @@ class AuthenticationClient {
 
     _completer = Completer();
 
-    final data = await _storage.read(key: 'EquipoW');
+    final data = await _storage.read(key: 'AdminMeli');
     if (data != null) {
       final session = Session.fromJson(jsonDecode(data));
 
@@ -49,8 +49,6 @@ class AuthenticationClient {
             expiresIn: session.expiresIn,
             createdAt: session.createdAt,
             user: session.user,
-            rol: session.rol,
-            name: session.name,
           );
         }
 
@@ -61,8 +59,6 @@ class AuthenticationClient {
             expiresIn: 0,
             createdAt: DateTime.now(),
             user: '',
-            rol: '',
-            name: '',
           );
         }
 
@@ -73,7 +69,7 @@ class AuthenticationClient {
         if (result.item1 == RequestResponse.ok) {
           final json = jsonDecode(result.item2);
           await saveSession(json['token']);
-          final dataRefresh = await _storage.read(key: 'EquipoW');
+          final dataRefresh = await _storage.read(key: 'AdminMeli');
           if (dataRefresh != null) {
             final sessionRefresh = Session.fromJson(jsonDecode(dataRefresh));
             _complete();
@@ -85,8 +81,6 @@ class AuthenticationClient {
               expiresIn: 0,
               createdAt: DateTime.now(),
               user: '',
-              rol: '',
-              name: '',
             );
           }
         }
@@ -97,8 +91,6 @@ class AuthenticationClient {
           expiresIn: session.expiresIn,
           createdAt: session.createdAt,
           user: session.user,
-          rol: session.rol,
-          name: session.name,
         );
       }
     }
@@ -108,13 +100,11 @@ class AuthenticationClient {
       expiresIn: 0,
       createdAt: DateTime.now(),
       user: '',
-      rol: '',
-      name: '',
     );
   }
 
   Future<Session> get getSession async {
-    final data = await _storage.read(key: 'EquipoW');
+    final data = await _storage.read(key: 'AdminMeli');
 
     if (data != null) {
       final json = jsonDecode(data);
@@ -126,8 +116,6 @@ class AuthenticationClient {
       expiresIn: 0,
       createdAt: DateTime.now(),
       user: '',
-      rol: '',
-      name: '',
     );
   }
 
@@ -141,15 +129,13 @@ class AuthenticationClient {
       expiresIn: decodedToken['exp'],
       createdAt: DateTime.now(),
       user: decodedToken['user'],
-      rol: decodedToken['rol'],
-      name: decodedToken['name'],
     );
 
     final data = jsonEncode(session.toJson());
-    await _storage.write(key: 'EquipoW', value: data);
+    await _storage.write(key: 'AdminMeli', value: data);
   }
 
   Future<void> signOut() async {
-    await _storage.delete(key: 'EquipoW');
+    await _storage.delete(key: 'AdminMeli');
   }
 }

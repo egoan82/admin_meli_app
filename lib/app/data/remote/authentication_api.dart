@@ -19,11 +19,17 @@ class AuthenticationAPI {
     final result = await _http.request<String>(
       '/login',
       method: HttpMethod.post,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
       body: {
         'user': user,
         'pass': password,
       },
-      parser: null,
+      parser: (data) {
+        final json = jsonDecode(data);
+        return json['token'];
+      },
     );
 
     if (result.error == null) {

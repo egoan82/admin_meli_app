@@ -17,6 +17,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     String password,
   ) async {
     final result = await _api.login(user, password);
+    if (result.item1 == RequestResponse.ok) {
+      final token = result.item2.split(' ')[1];
+      await _authClient.saveSession(token);
+    }
     return result;
   }
 

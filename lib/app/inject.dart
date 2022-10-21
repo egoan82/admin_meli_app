@@ -3,9 +3,13 @@ import 'package:get_it/get_it.dart';
 
 import 'data/local/authentication_client.dart';
 import 'data/remote/authentication_api.dart';
+import 'data/remote/questions_api.dart';
 import 'data/repositories_impl/authentication_repository_impl.dart';
+import 'data/repositories_impl/questions_repository_impl.dart';
 import 'domain/repositories/authentication_repository.dart';
+import 'domain/repositories/questions_repository.dart';
 import 'helpers/http.dart';
+import 'ui/global_controller/session_controller.dart';
 
 Future<void> injectDependencies() async {
   final http = Http(
@@ -19,13 +23,19 @@ Future<void> injectDependencies() async {
     authApi,
   );
 
-  GetIt.I.registerFactory<AuthenticationRepository>(
+  GetIt.I.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImpl(
       authApi,
       authClient,
     ),
   );
 
+  GetIt.I.registerLazySingleton<QuestionsRepository>(
+    () => QuestionsRepositoryImpl(
+      QuestionsApi(http),
+    ),
+  );
+
   GetIt.I.registerLazySingleton<AuthenticationClient>(() => authClient);
-  // GetIt.I.registerLazySingleton<SessionController>(() => SessionController());
+  GetIt.I.registerLazySingleton<SessionController>(() => SessionController());
 }

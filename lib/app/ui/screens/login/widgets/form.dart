@@ -8,7 +8,7 @@ import '../../../utils/fonts.dart';
 import '../../../utils/responsive.dart';
 import '../../widgets/dialogs.dart';
 import '../../widgets/snackbar.dart';
-import '../controller/login_controller.dart';
+import '../provider/login_controller.dart';
 
 class FormLogin extends StatelessWidget {
   const FormLogin({
@@ -50,7 +50,7 @@ class FormLogin extends StatelessWidget {
 
     if (result == RequestResponse.ok) {
       Navigator.pop(context);
-      // Navigator.pushReplacementNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'home');
     } else {
       Navigator.pop(context);
 

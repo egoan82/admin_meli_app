@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../utils/responsive.dart';
-import 'controller/login_controller.dart';
+import 'provider/login_controller.dart';
 import 'widgets/form.dart';
 import 'widgets/header.dart';
 
