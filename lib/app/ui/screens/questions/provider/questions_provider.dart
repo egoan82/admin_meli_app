@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_getters_setters
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -16,64 +18,20 @@ class QuestionsProvider with ChangeNotifier {
     getQuestions();
   }
 
-  final List<Map<String, dynamic>> _l = [
-    {
-      'name': 'TiendaMajo',
-      'picture':
-          'https://mla-s1-p.mlstatic.com/951547-MLA44485067540_012021-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-    {
-      'name': 'MiTienditaStore',
-      'picture':
-          'https://mla-s2-p.mlstatic.com/608306-MLA42754111028_072020-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-    {
-      'name': 'TiendaJuango',
-      'picture':
-          'https://mla-s1-p.mlstatic.com/850940-MLA44582442415_012021-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-    {
-      'name': 'VariedadesPipe02',
-      'picture':
-          'https://mla-s1-p.mlstatic.com/854644-MLA45879438421_052021-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-    {
-      'name': 'TuMiscelanea',
-      'picture':
-          'https://mla-s2-p.mlstatic.com/942346-MLA46330517660_062021-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-    {
-      'name': 'ImportNana',
-      'picture':
-          'https://mla-s1-p.mlstatic.com/796070-MLA46598178904_072021-O.jpg',
-      'color': const Color(0xffFFB656),
-    },
-    {
-      'name': 'ImportacionesTres',
-      'picture':
-          'https://mla-s2-p.mlstatic.com/750430-MLA46708269000_072021-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-    {
-      'name': 'ImportMuriel',
-      'picture':
-          'https://mla-s2-p.mlstatic.com/680305-MLA49160900195_022022-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-    {
-      'name': 'ImportChavo',
-      'picture':
-          'https://mla-s2-p.mlstatic.com/781684-MLA49386553280_032022-O.jpg',
-      'color': const Color(0xff31B93D),
-    },
-  ];
+  bool _loading = false;
+  bool get loading => _loading;
 
-  List<Map<String, dynamic>> get listShops => _l;
+  set loading(bool l) {
+    _loading = l;
+    notifyListeners();
+  }
+
+  late AnimationController _animationController;
+  AnimationController get animationController => _animationController;
+
+  set animationController(AnimationController controller) {
+    _animationController = controller;
+  }
 
   List<QuestionsStore>? _questions;
   List<QuestionsStore>? get questions => _questions;
@@ -108,9 +66,13 @@ class QuestionsProvider with ChangeNotifier {
   }
 
   Future<void> getQuestions() async {
+    loading = true;
+
     final String token = _sessionController.session.token;
     final String user = _sessionController.session.user;
     final result = await _api.getQuestions(user, token);
+
+    loading = false;
 
     if (result.item1 == RequestResponse.ok) {
       final json = jsonDecode(result.item2);

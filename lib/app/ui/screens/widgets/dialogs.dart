@@ -12,8 +12,11 @@ Future<void> alertLoading(
   showDialog(
     barrierDismissible: false,
     context: context,
-    builder: ((context) => AlertLoading(
-          title: title,
+    builder: ((context) => WillPopScope(
+          onWillPop: () => Future.value(false),
+          child: AlertLoading(
+            title: title,
+          ),
         )),
   );
 }

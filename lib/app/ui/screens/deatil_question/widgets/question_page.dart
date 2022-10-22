@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../utils/date_custom.dart';
 import '../../../utils/responsive.dart';
+import '../provider/detail_question_provider.dart';
 import 'buttons_question.dart';
 import 'input_answer.dart';
 import 'tags.dart';
 
-class Question extends StatelessWidget {
-  const Question({
+class QuestionPage extends StatelessWidget {
+  const QuestionPage({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive(context);
+    final q = Provider.of<DetailQuestionProvider>(
+      context,
+      listen: false,
+    ).q;
     return Card(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -73,7 +81,9 @@ class Question extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                DateTime.now().toString().substring(0, 19),
+                DateFormat('yyyy-mm-dd hh:mm a').format(
+                  DateCustom.date(q.dateCreated),
+                ),
                 style: TextStyle(
                   fontSize: size.dp(1),
                   color: Colors.black54,
@@ -92,7 +102,7 @@ class Question extends StatelessWidget {
                     ),
                     SizedBox(height: size.hp(0.6)),
                     Text(
-                      'Comprador',
+                      q.sellerId.toString(),
                       style: TextStyle(
                         fontSize: size.dp(1),
                         color: Colors.black54,
@@ -103,7 +113,7 @@ class Question extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    "Tienes disponible el producto para entrega inmediata, me interesa conocer las medidas, color y capacidad que tenga el producto.",
+                    q.text,
                     style: TextStyle(fontSize: size.dp(1.2)),
                     textAlign: TextAlign.justify,
                   ),
