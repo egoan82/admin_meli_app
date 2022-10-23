@@ -1,4 +1,6 @@
+import 'package:admin_meli_app/app/domain/models/detail_mco_model.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,41 +43,76 @@ class QuestionPage extends StatelessWidget {
                 // const Divider(),
                 // const ImagesProduct(),
                 const Divider(),
+                Selector<DetailQuestionProvider, DetailMco?>(
+                  selector: (_, c) => c.mco,
+                  builder: (_, mco, __) {
+                    return (mco == null)
+                        ? const SizedBox()
+                        : Image.network(
+                            mco.picture,
+                            fit: BoxFit.cover,
+                            height: size.hp(20),
+                          );
+                  },
+                ),
+                const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      child: const Text(
-                        'MCO654469331',
-                        style: TextStyle(
+                      child: Text(
+                        q!.itemId,
+                        style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       onTap: () async {
+                        String mco = q.itemId.split('MCO').join('MCO-');
                         final url = Uri.parse(
-                          'https://articulo.mercadolibre.com.co/MCO-654469331-_JM',
+                          "https://articulo.mercadolibre.com.co/$mco-_JM",
                         );
-                        await launchUrl(url);
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
                       },
                     ),
-                    InkWell(
-                      child: const Text(
-                        'B01B8GWKL6',
-                        style: TextStyle(
-                          color: Color(0xff092546),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () async {
-                        final url =
-                            Uri.parse('https://www.amazon.com/dp/B01B8GWKL6');
-                        await launchUrl(url);
+                    Selector<DetailQuestionProvider, DetailMco?>(
+                      selector: (_, c) => c.mco,
+                      builder: (_, mco, __) {
+                        return (mco == null)
+                            ? const Text('No registra')
+                            : InkWell(
+                                child: Text(
+                                  mco.sku,
+                                  style: const TextStyle(
+                                    color: Color(0xff092546),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onTap: () async {
+                                  final url = Uri.parse(
+                                    'https://www.amazon.com/dp/${mco.sku}',
+                                  );
+                                  await launchUrl(
+                                    url,
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                              );
                       },
                     ),
                   ],
                 ),
               ],
+            ),
+            const Divider(),
+            const Text(
+              'Pregunta',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const Divider(),
             Align(
@@ -96,13 +133,14 @@ class QuestionPage extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: size.dp(3),
-                      child: FlutterLogo(
-                        size: size.dp(4),
+                      child: FaIcon(
+                        FontAwesomeIcons.circleQuestion,
+                        size: size.dp(5),
                       ),
                     ),
                     SizedBox(height: size.hp(0.6)),
                     Text(
-                      q.sellerId.toString(),
+                      q.from.id.toString(),
                       style: TextStyle(
                         fontSize: size.dp(1),
                         color: Colors.black54,
@@ -114,23 +152,38 @@ class QuestionPage extends StatelessWidget {
                 Expanded(
                   child: Text(
                     q.text,
-                    style: TextStyle(fontSize: size.dp(1.2)),
+                    style: TextStyle(fontSize: size.dp(1.3)),
                     textAlign: TextAlign.justify,
                   ),
                 ),
               ],
             ),
             const Divider(),
-            Column(
+            Stack(
               children: [
-                const Text(
-                  'Respuestas rapidas',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                Column(
+                  children: [
+                    const Text(
+                      'Respuestas rapidas',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(),
+                    SizedBox(height: size.hp(1)),
+                    const Tags(),
+                  ],
+                ),
+                Positioned(
+                  top: -size.hp(1.8),
+                  right: 0,
+                  child: IconButton(
+                    icon: const Icon(Icons.add_circle),
+                    iconSize: size.dp(2),
+                    color: Colors.green,
+                    onPressed: () {},
                   ),
                 ),
-                SizedBox(height: size.hp(1.4)),
-                const Tags(),
               ],
             ),
             const Divider(),

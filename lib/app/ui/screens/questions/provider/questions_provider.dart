@@ -86,6 +86,7 @@ class QuestionsProvider with ChangeNotifier {
       questions = list;
       totalStores = list.length;
       listQuestions = list[0].questions;
+      store = list[0].name;
     }
   }
 

@@ -85,7 +85,7 @@ class QuestionsPage extends StatelessWidget {
                   ? const SizedBox()
                   : const AlertLoading(title: 'Cargando');
             },
-          )
+          ),
         ],
       ),
     );

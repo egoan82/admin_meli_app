@@ -43,13 +43,18 @@ class ListQuestions extends StatelessWidget {
                     child: Card(
                       child: InkWell(
                         onTap: () async {
+                          final String store = Provider.of<QuestionsProvider>(
+                            context,
+                            listen: false,
+                          ).store;
                           final r = await Navigator.pushNamed(
                             context,
                             'detailquestion',
-                            arguments: q,
+                            arguments: {
+                              'question': q,
+                              'store': store,
+                            },
                           );
-
-                          print(r);
                         },
                         child: Row(
                           children: [
