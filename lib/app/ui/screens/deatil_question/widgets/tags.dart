@@ -13,34 +13,6 @@ class Tags extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive(context);
-    // return Wrap(
-    //   children: List.generate(
-    //     18,
-    //     (index) => Padding(
-    //       padding: const EdgeInsets.symmetric(
-    //         horizontal: 2,
-    //         vertical: 2,
-    //       ),
-    //       child: Container(
-    //         padding: EdgeInsets.symmetric(
-    //           horizontal: size.wp(2),
-    //           vertical: size.hp(0.6),
-    //         ),
-    //         height: size.hp(2.6),
-    //         decoration: BoxDecoration(
-    //           color: Colors.green,
-    //           borderRadius: BorderRadius.circular(10),
-    //         ),
-    //         child: Text(
-    //           "Respuesta $index",
-    //           style: TextStyle(
-    //             fontSize: size.dp(1),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
 
     return Selector<DetailQuestionProvider, List<FastAnswer>>(
       selector: (_, c) => c.fastAnswer,

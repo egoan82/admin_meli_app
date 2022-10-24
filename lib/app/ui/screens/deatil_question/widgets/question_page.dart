@@ -1,13 +1,14 @@
-import 'package:admin_meli_app/app/domain/models/detail_mco_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../domain/models/detail_mco_model.dart';
 import '../../../utils/date_custom.dart';
 import '../../../utils/responsive.dart';
 import '../provider/detail_question_provider.dart';
+import 'button_add_fast_answer.dart';
 import 'buttons_question.dart';
 import 'input_answer.dart';
 import 'tags.dart';
@@ -40,8 +41,6 @@ class QuestionPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                // const Divider(),
-                // const ImagesProduct(),
                 const Divider(),
                 Selector<DetailQuestionProvider, DetailMco?>(
                   selector: (_, c) => c.mco,
@@ -177,12 +176,7 @@ class QuestionPage extends StatelessWidget {
                 Positioned(
                   top: -size.hp(1.8),
                   right: 0,
-                  child: IconButton(
-                    icon: const Icon(Icons.add_circle),
-                    iconSize: size.dp(2),
-                    color: Colors.green,
-                    onPressed: () {},
-                  ),
+                  child: const ButtonAddFastAnswer(),
                 ),
               ],
             ),

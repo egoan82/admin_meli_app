@@ -8,11 +8,12 @@ class CloudFirestore {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> saveTokenPhone(String token) async {
+  Future<void> saveTokenPhone(String token, String idDevice) async {
     // ignore: todo
     //TODO CONSULTAR SI EXISTE UN ID GUARDADO EN LA SESSION
     _firestore.collection('admin-tienda-phones').add({
       'token': token,
+      'idDevice': idDevice,
       'date': DateTime.now(),
     }).then(
       (value) {

@@ -12,11 +12,8 @@ Future<void> alertLoading(
   showDialog(
     barrierDismissible: false,
     context: context,
-    builder: ((context) => WillPopScope(
-          onWillPop: () => Future.value(false),
-          child: AlertLoading(
-            title: title,
-          ),
+    builder: ((context) => AlertLoading(
+          title: title,
         )),
   );
 }
@@ -58,10 +55,10 @@ Future<void> alertSuccess(
 }
 
 Future<void> alertRequest(
-  BuildContext context,
-  String title,
-  String subtitle, {
-  String? ruta,
+  BuildContext context, {
+  required Widget widget,
+  required double height,
+  required String title,
   VoidCallback? onPress,
 }) async {
   showDialog(
@@ -69,9 +66,9 @@ Future<void> alertRequest(
     context: context,
     builder: ((context) => AlertRequest(
           title: title,
-          subtitle: subtitle,
-          ruta: ruta,
-          onPressed: onPress,
+          widget: widget,
+          height: height,
+          okOnPressed: onPress,
         )),
   );
 }

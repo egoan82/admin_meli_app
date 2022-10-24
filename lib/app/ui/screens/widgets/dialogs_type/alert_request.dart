@@ -1,178 +1,120 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
-import '../../../utils/colors.dart';
+import '../../../utils/fonts.dart';
 import '../../../utils/responsive.dart';
 
-class AlertRequest extends StatefulWidget {
+class AlertRequest extends StatelessWidget {
   const AlertRequest({
     Key? key,
+    this.okOnPressed,
+    required this.widget,
     required this.title,
-    required this.subtitle,
-    this.ruta,
-    this.onPressed,
+    this.height = 100,
   }) : super(key: key);
-  final String title, subtitle;
-  final String? ruta;
-  final VoidCallback? onPressed;
 
-  @override
-  State<AlertRequest> createState() => _AlertRequestState();
-}
-
-class _AlertRequestState extends State<AlertRequest>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _animation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.bounceOut,
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  final VoidCallback? okOnPressed;
+  final Widget widget;
+  final double height;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive(context);
-    return AlertDialog(
-      content: SizedBox(
-        height: (size.height < 600)
-            ? ((widget.subtitle.length > 32) ? size.hp(34) : size.hp(26))
-            : ((widget.subtitle.length > 32) ? size.hp(28) : size.hp(26)),
-        width: size.wp(80),
-        child: Column(
-          children: [
-            AnimatedBuilder(
-              animation: _animationController,
-              child: Icon(
-                Icons.question_mark,
-                color: ColoresApp.DANGER,
-                size: size.dp(10),
-              ),
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _animation.value.clamp(0.0, 1.5),
-                  child: Transform.rotate(
-                    angle: (_animation.value * (math.pi * 2)),
-                    child: child,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Center(
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  height: height,
+                  width: size.wp(80),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                );
-              },
-            ),
-            SizedBox(height: size.hp(2)),
-            Text(
-              widget.title,
-              style: const TextStyle(
-                fontSize: 24,
-                height: 1.2,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF707070),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: size.hp(2)),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Text(
-                  widget.subtitle,
-                  style: TextStyle(
-                    fontSize: (widget.subtitle.length > 32) ? 12 : 18,
-                    height: 1.2,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF707070),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.wp(6),
+                      vertical: size.hp(2),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              SizedBox(height: size.hp(4)),
+                              FontsApp.subtitulos(
+                                title,
+                                size,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              Expanded(child: widget),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Colors.red,
+                                ),
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.symmetric(
+                                  horizontal: size.wp(8),
+                                )),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancelar'),
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Theme.of(context).colorScheme.primary,
+                                ),
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.symmetric(
+                                  horizontal: size.wp(8.6),
+                                )),
+                              ),
+                              onPressed: () => okOnPressed,
+                              child: const Text('Aceptar'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
+                Positioned(
+                  top: -size.hp(6),
+                  left: 0,
+                  right: 0,
+                  child: CircleAvatar(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    radius: size.dp(5),
+                    child: Icon(
+                      Icons.playlist_add_circle_outlined,
+                      color: Colors.white,
+                      size: size.hp(10),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  ColoresApp.DANGER,
-                ),
-                maximumSize: MaterialStateProperty.all<Size>(
-                  Size(
-                    size.wp(30),
-                    size.hp(5),
-                  ),
-                ),
-                minimumSize: MaterialStateProperty.all<Size>(
-                  Size(
-                    size.wp(30),
-                    size.hp(5),
-                  ),
-                ),
-              ),
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).colorScheme.primary,
-                ),
-                maximumSize: MaterialStateProperty.all<Size>(
-                  Size(
-                    size.wp(30),
-                    size.hp(5),
-                  ),
-                ),
-                minimumSize: MaterialStateProperty.all<Size>(
-                  Size(
-                    size.wp(30),
-                    size.hp(5),
-                  ),
-                ),
-              ),
-              onPressed: (widget.onPressed != null)
-                  ? widget.onPressed
-                  : () {
-                      switch (widget.ruta) {
-                        case 'login':
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            'login',
-                            (route) => false,
-                          );
-                          break;
-                        case 'home':
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            'home',
-                            (route) => false,
-                          );
-                          break;
-                        default:
-                          Navigator.pop(context);
-                          break;
-                      }
-                    },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

@@ -94,7 +94,8 @@ class MenuDrawer extends StatelessWidget {
                 (route) => false,
               );
             },
-          )
+          ),
+          SizedBox(height: size.hp(1)),
         ],
       ),
     );

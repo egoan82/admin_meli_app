@@ -2,9 +2,11 @@
 
 import 'dart:async';
 import 'dart:math';
+import 'dart:io' show Platform;
 
 import 'package:admin_meli_app/app/data/firebase/cloud_firestore.dart';
 import 'package:admin_meli_app/app/data/local/local_notifications_service.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -46,15 +48,29 @@ class PushNotificationService {
   static Future initializeApp() async {
     await Firebase.initializeApp();
     await requestPermission();
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    String idDevice = '';
+
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      idDevice = androidInfo.id;
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      idDevice = iosInfo.identifierForVendor ?? '';
+    }
 
     token = await FirebaseMessaging.instance.getToken();
+    // print("ID DEVICE $idDevice");
 
     // Handlers
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessageHandler);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
 
-    // CloudFirestore.i.saveTokenPhone(token!);
+    if (token != null) {
+      // CloudFirestore.i.saveTokenPhone(token!, idDevice);
+    }
 
     FirebaseMessaging.instance.onTokenRefresh.listen(
       (token) {

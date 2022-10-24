@@ -3,9 +3,9 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/models/questions_store_model.dart';
-import '../../../utils/color_reputation.dart';
 import '../../../utils/responsive.dart';
 import '../provider/questions_provider.dart';
+import 'card_store.dart';
 
 class ListStores extends StatelessWidget {
   const ListStores({
@@ -29,8 +29,8 @@ class ListStores extends StatelessWidget {
                 )
               : Builder(
                   builder: (context) => GridView.count(
-                    childAspectRatio: 1.2,
-                    crossAxisCount: 4,
+                    childAspectRatio: 1.8,
+                    crossAxisCount: 3,
                     children: questions
                         .map(
                           (e) => InkWell(
@@ -39,62 +39,7 @@ class ListStores extends StatelessWidget {
                               context,
                               listen: false,
                             ).setlistQuestions(e.name),
-                            child: Card(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: double.infinity,
-                                    width: 6,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          ColorReputation.color(e.reputation),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4),
-                                        bottomLeft: Radius.circular(4),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          width: size.wp(16),
-                                          child: Text(
-                                            e.name,
-                                            style: TextStyle(
-                                              fontSize: size.dp(1.2),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            overflow: TextOverflow.fade,
-                                            maxLines: 1,
-                                            softWrap: false,
-                                          ),
-                                        ),
-                                        SizedBox(height: size.hp(1)),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Image.network(
-                                              e.thumbnail,
-                                              height: size.hp(3),
-                                            ),
-                                            SizedBox(width: size.wp(1)),
-                                            Text(
-                                              e.questions.length.toString(),
-                                              style: TextStyle(
-                                                fontSize: size.dp(2),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            child: CardStore(e: e),
                           ),
                         )
                         .toList(),
