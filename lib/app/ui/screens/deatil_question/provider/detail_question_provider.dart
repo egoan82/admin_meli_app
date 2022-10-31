@@ -20,7 +20,7 @@ class DetailQuestionProvider with ChangeNotifier {
     load();
   }
 
-  void load() async {
+  Future<void> load() async {
     Future.delayed(Duration.zero).then(
       (value) async {
         loading = true;
@@ -29,6 +29,13 @@ class DetailQuestionProvider with ChangeNotifier {
         loading = false;
       },
     );
+  }
+
+  late AnimationController _animationController;
+  AnimationController get animationController => _animationController;
+
+  set animationController(AnimationController controller) {
+    _animationController = controller;
   }
 
   final TextEditingController _answerController = TextEditingController();

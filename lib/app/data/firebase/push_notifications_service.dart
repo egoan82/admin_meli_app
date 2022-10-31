@@ -6,12 +6,18 @@ import 'dart:io' show Platform;
 
 import 'package:admin_meli_app/app/data/firebase/cloud_firestore.dart';
 import 'package:admin_meli_app/app/data/local/local_notifications_service.dart';
+import 'package:admin_meli_app/app/domain/models/session.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
+
+import '../local/authentication_client.dart';
 
 class PushNotificationService {
+  static AuthenticationClient autenticationClient =
+      GetIt.I.get<AuthenticationClient>();
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -48,37 +54,15 @@ class PushNotificationService {
   static Future initializeApp() async {
     await Firebase.initializeApp();
     await requestPermission();
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-    String idDevice = '';
-
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      idDevice = androidInfo.id;
-    } else if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      idDevice = iosInfo.identifierForVendor ?? '';
-    }
-
-    token = await FirebaseMessaging.instance.getToken();
-    // print("ID DEVICE $idDevice");
+    saveToken();
 
     // Handlers
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessageHandler);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
 
-    if (token != null) {
-      // CloudFirestore.i.saveTokenPhone(token!, idDevice);
-    }
-
-    FirebaseMessaging.instance.onTokenRefresh.listen(
-      (token) {
-        // CloudFirestore.i.updateTokenPhone(token);
-      },
-      onDone: () {},
-      onError: (e) {},
-    );
+    // print("ID DEVICE $idDevice");
 
     // Local Notifications
   }
@@ -95,6 +79,41 @@ class PushNotificationService {
       provisional: false,
       sound: true,
     );
+  }
+
+  static saveToken() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    final getInfoDevice = await autenticationClient.getInfoDevice;
+
+    String idDevice = '';
+
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      idDevice = androidInfo.id;
+      // if (!androidInfo.isPhysicalDevice) return;
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      idDevice = iosInfo.identifierForVendor ?? '';
+      // if (!iosInfo.isPhysicalDevice) return;
+    }
+
+    token = await FirebaseMessaging.instance.getToken();
+
+    if (token == null) return;
+
+    if (getInfoDevice.isEmpty) {
+      CloudFirestore.i.saveTokenPhone(token!, idDevice);
+      return;
+    }
+
+    if (token != getInfoDevice['tokenDevice']) {
+      CloudFirestore.i.updateTokenPhone(
+        token!,
+        idDevice,
+        getInfoDevice['idFireBase'],
+      );
+    }
   }
 
   static closeStreams() {

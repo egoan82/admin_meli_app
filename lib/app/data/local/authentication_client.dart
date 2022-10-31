@@ -137,7 +137,32 @@ class AuthenticationClient {
     await _storage.write(key: 'AdminMeli', value: data);
   }
 
+  Future<void> saveInfoDevice(
+    String idDevice,
+    String tokenDevice,
+    String idFireBase,
+  ) async {
+    final info = {
+      'idFireBase': idFireBase,
+      'idDevice': idDevice,
+      'tokenDevice': tokenDevice,
+    };
+
+    final data = jsonEncode(info);
+    await _storage.write(key: 'InfoDevice', value: data);
+  }
+
+  Future<Map<String, dynamic>> get getInfoDevice async {
+    final data = await _storage.read(key: 'InfoDevice');
+
+    if (data != null) {
+      final json = jsonDecode(data);
+      return json;
+    }
+    return {};
+  }
+
   Future<void> signOut() async {
-    await _storage.delete(key: 'AdminMeli');
+    await _storage.deleteAll();
   }
 }

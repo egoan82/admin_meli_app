@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get_it/get_it.dart';
+
+import '../local/authentication_client.dart';
 
 class CloudFirestore {
   static final CloudFirestore _instance = CloudFirestore._internal();
+  static AuthenticationClient autenticationClient =
+      GetIt.I.get<AuthenticationClient>();
 
   CloudFirestore._internal();
   static CloudFirestore get i => _instance;
@@ -16,9 +21,14 @@ class CloudFirestore {
       'idDevice': idDevice,
       'date': DateTime.now(),
     }).then(
-      (value) {
+      (value) async {
         // ignore: todo
         //TODO GUARDAR EL ID EN LA SESSION
+        await autenticationClient.saveInfoDevice(
+          idDevice,
+          token,
+          value.id,
+        );
         // print("User Added ${value.id}");
       },
     ).catchError(
@@ -28,12 +38,14 @@ class CloudFirestore {
     );
   }
 
-  Future<void> updateTokenPhone(String token) async {
-    _firestore
-        .collection('admin-tienda-phones')
-        .doc('4rzimFMn3gSBzyCuzdxJ')
-        .update({
+  Future<void> updateTokenPhone(
+    String token,
+    String idDevice,
+    String idFireBase,
+  ) async {
+    _firestore.collection('admin-tienda-phones').doc(idFireBase).update({
       'token': token,
+      'idDevice': idDevice,
       'date': DateTime.now(),
     });
   }

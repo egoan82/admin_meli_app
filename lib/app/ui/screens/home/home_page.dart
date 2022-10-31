@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/local/local_notifications_service.dart';
+import '../../../domain/models/session.dart';
 import '../../utils/responsive.dart';
 import '../widgets/dialogs.dart';
 import 'provider/home_provider.dart';
@@ -47,7 +48,14 @@ class _HomePageState extends State<HomePage> {
         body: Center(
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
+              Selector<HomeProvider, Session?>(
+                selector: (_, c) => c.session,
+                builder: (_, session, __) {
+                  return Text(session?.user ?? 'No usuario');
+                },
+              ),
+              const SizedBox(height: 30),
               Text("Modelo: ${androidInfo == null ? '' : androidInfo!.model}"),
               Text("Marca: ${androidInfo == null ? '' : androidInfo!.brand}"),
               Text("Id: ${androidInfo == null ? '' : androidInfo!.id}"),

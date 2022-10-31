@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +74,29 @@ class DetailQuestionPage extends StatelessWidget {
                     },
                   )
                 ],
+              ),
+            ),
+            floatingActionButton: Builder(
+              builder: (context) => FloatingActionButton(
+                child: Spin(
+                  animate: false,
+                  controller: (controller) =>
+                      Provider.of<DetailQuestionProvider>(
+                    context,
+                    listen: false,
+                  ).animationController = controller,
+                  child: const Icon(Icons.refresh),
+                ),
+                onPressed: () async {
+                  final controller = Provider.of<DetailQuestionProvider>(
+                    context,
+                    listen: false,
+                  );
+                  controller.animationController.reset();
+                  controller.animationController.repeat();
+                  await controller.load();
+                  controller.animationController.stop();
+                },
               ),
             ),
           ),

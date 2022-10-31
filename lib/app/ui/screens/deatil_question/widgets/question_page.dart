@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,11 +48,22 @@ class QuestionPage extends StatelessWidget {
                   selector: (_, c) => c.mco,
                   builder: (_, mco, __) {
                     return (mco == null)
-                        ? const SizedBox()
-                        : Image.network(
-                            mco.picture,
-                            fit: BoxFit.cover,
-                            height: size.hp(20),
+                        ? LottieBuilder.asset(
+                            'assets/no_image.json',
+                            width: size.wp(50),
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: mco.picture,
+                            width: size.wp(50),
+                            placeholder: (context, url) => LottieBuilder.asset(
+                              'assets/no_image.json',
+                              width: size.wp(50),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                LottieBuilder.asset(
+                              'assets/no_image.json',
+                              width: size.wp(50),
+                            ),
                           );
                   },
                 ),
