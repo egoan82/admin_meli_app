@@ -15,6 +15,7 @@ class DetailMco {
     required this.freeShipping,
     required this.status,
     required this.sku,
+    required this.dbExists,
   });
 
   final String id;
@@ -26,6 +27,7 @@ class DetailMco {
   final bool freeShipping;
   final String status;
   final String sku;
+  final bool dbExists;
 
   factory DetailMco.fromJson(Map<String, dynamic> json) => DetailMco(
         id: json["id"] ?? '',
@@ -37,6 +39,7 @@ class DetailMco {
         freeShipping: json["free_shipping"] ?? true,
         status: json["status"] ?? '',
         sku: json["sku"] ?? '',
+        dbExists: json["db_exists"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,5 +52,6 @@ class DetailMco {
         "free_shipping": freeShipping,
         "status": status,
         "sku": sku,
+        "db_exists": dbExists,
       };
 }

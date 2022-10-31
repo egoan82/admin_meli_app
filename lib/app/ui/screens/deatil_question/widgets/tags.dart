@@ -49,6 +49,7 @@ class Tags extends StatelessWidget {
                             e.nombre,
                             style: TextStyle(
                               fontSize: size.dp(1),
+                              color: Colors.white,
                             ),
                           ),
                         ),

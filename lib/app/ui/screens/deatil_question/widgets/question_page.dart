@@ -51,18 +51,46 @@ class QuestionPage extends StatelessWidget {
                         ? LottieBuilder.asset(
                             'assets/no_image.json',
                             width: size.wp(50),
+                            height: size.hp(20),
                           )
-                        : CachedNetworkImage(
-                            imageUrl: mco.picture,
-                            width: size.wp(50),
-                            placeholder: (context, url) => LottieBuilder.asset(
-                              'assets/no_image.json',
-                              width: size.wp(50),
-                            ),
-                            errorWidget: (context, url, error) =>
-                                LottieBuilder.asset(
-                              'assets/no_image.json',
-                              width: size.wp(50),
+                        : SizedBox(
+                            width: size.wp(90),
+                            height: size.hp(20),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: CachedNetworkImage(
+                                    imageUrl: mco.picture,
+                                    placeholder: (context, url) => Icon(
+                                      Icons.image,
+                                      color: Colors.grey,
+                                      size: size.dp(20),
+                                    ),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.image,
+                                      color: Colors.red.shade900,
+                                      size: size.dp(20),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: Icon(
+                                    Icons.local_shipping_outlined,
+                                    color: (mco.freeShipping)
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                                ),
+                                if (!mco.dbExists)
+                                  Positioned(
+                                    right: size.wp(6),
+                                    child: const Icon(
+                                      Icons.sync_problem_outlined,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                              ],
                             ),
                           );
                   },
@@ -130,9 +158,7 @@ class QuestionPage extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                DateFormat('yyyy-mm-dd hh:mm a').format(
-                  DateCustom.date(q.dateCreated),
-                ),
+                DateCustom.dateQuestions(q.dateCreated),
                 style: TextStyle(
                   fontSize: size.dp(1),
                   color: Colors.black54,
@@ -147,7 +173,7 @@ class QuestionPage extends StatelessWidget {
                       radius: size.dp(3),
                       child: FaIcon(
                         FontAwesomeIcons.circleQuestion,
-                        size: size.dp(5),
+                        size: size.dp(4.6),
                       ),
                     ),
                     SizedBox(height: size.hp(0.6)),

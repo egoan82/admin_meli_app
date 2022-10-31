@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app/data/firebase/push_notifications_service.dart';
 import 'app/data/local/local_notifications_service.dart';
@@ -54,6 +55,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Admin Meli',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: const Locale('es'),
       theme: ThemeData(
         brightness: Brightness.light,
         colorScheme: ColorScheme.fromSwatch().copyWith(

@@ -110,9 +110,8 @@ class ListQuestions extends StatelessWidget {
                                           },
                                         ),
                                         Text(
-                                          DateFormat('yyyy-MM-dd hh:mm a')
-                                              .format(DateCustom.date(
-                                                  q.dateCreated)),
+                                          DateCustom.dateQuestions(
+                                              q.dateCreated),
                                           style: TextStyle(
                                             fontSize: size.dp(1.2),
                                           ),
