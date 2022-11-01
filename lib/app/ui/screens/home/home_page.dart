@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:admin_meli_app/app/data/firebase/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -142,6 +143,12 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               const SizedBox(height: 20),
+              ElevatedButton(
+                child: const Text('Buscar usuario Firebase'),
+                onPressed: () async {
+                  await CloudFirestore.i.getUser('adriana');
+                },
+              ),
             ],
           ),
         ),

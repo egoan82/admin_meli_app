@@ -4,6 +4,7 @@ import 'package:admin_meli_app/app/ui/screens/home/provider/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../domain/models/session.dart';
 import '../../../utils/fonts.dart';
 import '../../../utils/responsive.dart';
 
@@ -19,7 +20,7 @@ class MenuDrawer extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: size.hp(22),
+            height: size.hp(24),
             width: double.infinity,
             color: Theme.of(context).colorScheme.primary,
             child: Column(
@@ -27,8 +28,8 @@ class MenuDrawer extends StatelessWidget {
               children: [
                 SizedBox(height: size.hp(4)),
                 Container(
-                  height: size.hp(10),
-                  width: size.wp(60),
+                  height: size.hp(8),
+                  width: size.wp(50),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(20),
@@ -39,13 +40,22 @@ class MenuDrawer extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Image.asset('assets/logo_white.png'),
+                    child: Image.asset(
+                      'assets/logo_white.png',
+                    ),
                   ),
                 ),
-                FontsApp.subtitulos(
-                  'Edward Gómez',
-                  size,
-                  color: Colors.white,
+                Selector<HomeProvider, Session?>(
+                  selector: (_, c) => c.session,
+                  builder: (_, session, __) {
+                    return FontsApp.subtitulos(
+                      "Hola 😉 ${FontsApp.capitalize(
+                        session?.user ?? 'No usuario',
+                      )}",
+                      size,
+                      color: Colors.white,
+                    );
+                  },
                 ),
               ],
             ),

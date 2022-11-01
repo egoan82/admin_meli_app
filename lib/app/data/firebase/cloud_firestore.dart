@@ -38,6 +38,22 @@ class CloudFirestore {
     );
   }
 
+  Future<void> getUser(String user, [String? idDevice]) async {
+    // ignore: todo
+    //TODO CONSULTAR SI EXISTE UN ID GUARDADO EN LA SESSION
+
+    await _firestore
+        .collection("admin-tienda-phones")
+        // .where("idDevice", isEqualTo: "SKQ1.210908.001")
+        .get()
+        .then((value) {
+      print("😀😀😀");
+      print(value.docs.length);
+    }).onError((error, stackTrace) {
+      print(error);
+    });
+  }
+
   Future<void> updateTokenPhone(
     String token,
     String idDevice,
