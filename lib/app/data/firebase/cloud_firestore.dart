@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../domain/models/session.dart';
 import '../local/authentication_client.dart';
 
 class CloudFirestore {
@@ -14,16 +15,15 @@ class CloudFirestore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> saveTokenPhone(String token, String idDevice) async {
-    // ignore: todo
-    //TODO CONSULTAR SI EXISTE UN ID GUARDADO EN LA SESSION
+    Session session = await autenticationClient.getSession;
+
     _firestore.collection('admin-tienda-phones').add({
+      'name': session.user,
       'token': token,
       'idDevice': idDevice,
       'date': DateTime.now(),
     }).then(
       (value) async {
-        // ignore: todo
-        //TODO GUARDAR EL ID EN LA SESSION
         await autenticationClient.saveInfoDevice(
           idDevice,
           token,
@@ -39,16 +39,14 @@ class CloudFirestore {
   }
 
   Future<void> getUser(String user, [String? idDevice]) async {
-    // ignore: todo
-    //TODO CONSULTAR SI EXISTE UN ID GUARDADO EN LA SESSION
-
     await _firestore
         .collection("admin-tienda-phones")
-        // .where("idDevice", isEqualTo: "SKQ1.210908.001")
+        .where("idDevice", isEqualTo: "SKQ1.210908.001")
         .get()
         .then((value) {
       print("😀😀😀");
       print(value.docs.length);
+      print(value.docs[0]['name']);
     }).onError((error, stackTrace) {
       print(error);
     });
@@ -59,9 +57,11 @@ class CloudFirestore {
     String idDevice,
     String idFireBase,
   ) async {
+    Session session = await autenticationClient.getSession;
+
     _firestore.collection('admin-tienda-phones').doc(idFireBase).update({
       'token': token,
-      'idDevice': idDevice,
+      'name': session.user,
       'date': DateTime.now(),
     });
   }

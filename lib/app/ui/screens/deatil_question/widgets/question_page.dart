@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -117,6 +119,23 @@ class QuestionPage extends StatelessWidget {
                           mode: LaunchMode.externalApplication,
                         );
                       },
+                      onLongPress: () {
+                        Clipboard.setData(
+                          ClipboardData(text: q.itemId),
+                        );
+
+                        Fluttertoast.showToast(
+                          msg: "MCO Copiado",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.black.withOpacity(
+                            0.6,
+                          ),
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      },
                     ),
                     Selector<DetailQuestionProvider, DetailMco?>(
                       selector: (_, c) => c.mco,
@@ -138,6 +157,23 @@ class QuestionPage extends StatelessWidget {
                                   await launchUrl(
                                     url,
                                     mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                                onLongPress: () {
+                                  Clipboard.setData(
+                                    ClipboardData(text: mco.sku),
+                                  );
+
+                                  Fluttertoast.showToast(
+                                    msg: "SKU Copiado",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.black.withOpacity(
+                                      0.6,
+                                    ),
+                                    textColor: Colors.white,
+                                    fontSize: 16.0,
                                   );
                                 },
                               );

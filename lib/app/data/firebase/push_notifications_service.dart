@@ -103,11 +103,11 @@ class PushNotificationService {
     if (token == null) return;
 
     if (getInfoDevice.isEmpty) {
-      // CloudFirestore.i.saveTokenPhone(token!, idDevice);
+      CloudFirestore.i.saveTokenPhone(token!, idDevice);
       return;
     }
 
-    if (token != getInfoDevice['tokenDevice']) {
+    if (token != "getInfoDevice['tokenDevice']") {
       CloudFirestore.i.updateTokenPhone(
         token!,
         idDevice,

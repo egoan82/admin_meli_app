@@ -37,14 +37,14 @@ class DetailQuestionPage extends StatelessWidget {
             Navigator.pop(context, 'eliminado');
             return Future.value(false);
           },
-          child: Scaffold(
-            body: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Stack(
-                children: [
-                  Column(
+          child: Stack(
+            children: [
+              Scaffold(
+                body: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: Column(
                     children: [
                       const Header(),
                       SizedBox(height: size.hp(1)),
@@ -58,6 +58,7 @@ class DetailQuestionPage extends StatelessWidget {
                               // ignore: prefer_const_literals_to_create_immutables
                               children: [
                                 const QuestionPage(),
+                                SizedBox(height: size.hp(10)),
                               ],
                             ),
                           ),
@@ -65,40 +66,40 @@ class DetailQuestionPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Selector<DetailQuestionProvider, bool>(
-                    selector: (_, c) => c.loading,
-                    builder: (_, loading, __) {
-                      return (!loading)
-                          ? const SizedBox()
-                          : const AlertLoading(title: 'Cargando');
-                    },
-                  )
-                ],
-              ),
-            ),
-            floatingActionButton: Builder(
-              builder: (context) => FloatingActionButton(
-                child: Spin(
-                  animate: false,
-                  controller: (controller) =>
-                      Provider.of<DetailQuestionProvider>(
-                    context,
-                    listen: false,
-                  ).animationController = controller,
-                  child: const Icon(Icons.refresh),
                 ),
-                onPressed: () async {
-                  final controller = Provider.of<DetailQuestionProvider>(
-                    context,
-                    listen: false,
-                  );
-                  controller.animationController.reset();
-                  controller.animationController.repeat();
-                  await controller.load();
-                  controller.animationController.stop();
+                floatingActionButton: Builder(
+                  builder: (context) => FloatingActionButton(
+                    child: Spin(
+                      animate: false,
+                      controller: (controller) =>
+                          Provider.of<DetailQuestionProvider>(
+                        context,
+                        listen: false,
+                      ).animationController = controller,
+                      child: const Icon(Icons.refresh),
+                    ),
+                    onPressed: () async {
+                      final controller = Provider.of<DetailQuestionProvider>(
+                        context,
+                        listen: false,
+                      );
+                      controller.animationController.reset();
+                      controller.animationController.repeat();
+                      await controller.load();
+                      controller.animationController.stop();
+                    },
+                  ),
+                ),
+              ),
+              Selector<DetailQuestionProvider, bool>(
+                selector: (_, c) => c.loading,
+                builder: (_, loading, __) {
+                  return (!loading)
+                      ? const SizedBox()
+                      : const AlertLoading(title: 'Cargando');
                 },
               ),
-            ),
+            ],
           ),
         );
       },
