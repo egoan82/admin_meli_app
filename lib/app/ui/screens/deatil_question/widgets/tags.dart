@@ -30,10 +30,15 @@ class Tags extends StatelessWidget {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
                         onTap: () {
-                          Provider.of<DetailQuestionProvider>(
+                          final controller =
+                              Provider.of<DetailQuestionProvider>(
                             context,
                             listen: false,
-                          ).answerController.text = e.respuesta;
+                          );
+
+                          final t = controller.answerController.text;
+
+                          controller.answerController.text = t + e.respuesta;
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(

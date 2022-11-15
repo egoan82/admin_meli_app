@@ -273,7 +273,7 @@ class QuestionPage extends StatelessWidget {
                         )),
                   ),
                 ),
-                const ButtonsQuestion(),
+                ButtonsQuestion(idQuestion: q.id),
               ],
             ),
           ],

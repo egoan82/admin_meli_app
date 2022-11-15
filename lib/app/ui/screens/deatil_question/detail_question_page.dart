@@ -34,7 +34,7 @@ class DetailQuestionPage extends StatelessWidget {
 
         return WillPopScope(
           onWillPop: () {
-            Navigator.pop(context, 'eliminado');
+            Navigator.pop(context, {"estado: 'NO eliminar', 'id': ${q.id}"});
             return Future.value(false);
           },
           child: Stack(

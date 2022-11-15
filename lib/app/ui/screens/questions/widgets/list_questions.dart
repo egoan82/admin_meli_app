@@ -1,5 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,6 @@ class ListQuestions extends StatelessWidget {
                 itemCount: listQuestions.length,
                 itemBuilder: (context, index) {
                   final q = listQuestions[index];
-
                   return SizedBox(
                     height: size.hp(12),
                     width: size.wp(60),
@@ -54,7 +54,14 @@ class ListQuestions extends StatelessWidget {
                               'question': q,
                               'store': store,
                             },
-                          );
+                          ) as Map;
+
+                          if (r['estado'] == 'eliminar') {
+                            Provider.of<QuestionsProvider>(
+                              context,
+                              listen: false,
+                            ).getQuestions();
+                          }
                         },
                         child: Row(
                           children: [

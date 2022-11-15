@@ -5,7 +5,10 @@ import '../../../utils/responsive.dart';
 class ButtonsQuestion extends StatelessWidget {
   const ButtonsQuestion({
     Key? key,
+    required this.idQuestion,
   }) : super(key: key);
+
+  final int idQuestion;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,13 @@ class ButtonsQuestion extends StatelessWidget {
                   Theme.of(context).colorScheme.primary,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Map<String, dynamic> data = {
+                  'estado': 'eliminar',
+                  'id': idQuestion,
+                };
+                Navigator.pop(context, data);
+              },
             ),
           ),
         ),
