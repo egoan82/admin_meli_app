@@ -60,7 +60,7 @@ class ListQuestions extends StatelessWidget {
                             Provider.of<QuestionsProvider>(
                               context,
                               listen: false,
-                            ).getQuestions();
+                            ).deleteQuestion(r['id']);
                           }
                         },
                         child: Row(

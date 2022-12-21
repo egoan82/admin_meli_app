@@ -24,7 +24,12 @@ class QuestionsPage extends StatelessWidget {
         children: [
           Scaffold(
             appBar: AppBar(
-              title: const Text('Preguntas'),
+              title: Selector<QuestionsProvider, int>(
+                selector: (_, c) => c.totalQuestions,
+                builder: (_, total, __) {
+                  return Text('Preguntas ($total)');
+                },
+              ),
               centerTitle: true,
               elevation: 0,
             ),

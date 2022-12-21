@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../utils/responsive.dart';
 
 class ButtonsQuestion extends StatelessWidget {
-  const ButtonsQuestion({
-    Key? key,
-    required this.idQuestion,
-  }) : super(key: key);
+  const ButtonsQuestion({Key? key, required this.idQuestion, required})
+      : super(key: key);
 
   final int idQuestion;
 

@@ -77,13 +77,6 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                child: const Text('Mostrar loading'),
-                onPressed: () async {
-                  alertLoading(context, 'Cargando');
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
                 child: const Text('Mostrar alerta'),
                 onPressed: () async {
                   alertRequest(

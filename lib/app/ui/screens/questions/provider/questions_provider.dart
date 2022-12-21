@@ -49,6 +49,14 @@ class QuestionsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  int _totalQuestions = 0;
+  int get totalQuestions => _totalQuestions;
+
+  set totalQuestions(int t) {
+    _totalQuestions = t;
+    notifyListeners();
+  }
+
   List<Question>? _listQuestions;
   List<Question>? get listQuestions => _listQuestions;
 
@@ -66,6 +74,10 @@ class QuestionsProvider with ChangeNotifier {
   }
 
   Future<void> getQuestions() async {
+    totalStores = 0;
+    totalQuestions = 0;
+    questions = [];
+    listQuestions = [];
     loading = true;
 
     final String token = _sessionController.session.token;
@@ -87,6 +99,12 @@ class QuestionsProvider with ChangeNotifier {
       totalStores = list.length;
       listQuestions = list[0].questions;
       store = list[0].name;
+
+      if (questions != null) {
+        for (var element in questions!) {
+          totalQuestions += element.total;
+        }
+      }
     }
   }
 
@@ -99,5 +117,18 @@ class QuestionsProvider with ChangeNotifier {
         }
       }
     }
+  }
+
+  void deleteQuestion(int id) {
+    for (var element in questions!) {
+      if (element.name == store) {
+        element.questions.removeWhere((q) => q.id == id);
+        listQuestions = element.questions.isEmpty ? null : element.questions;
+        totalQuestions -= 1;
+      }
+    }
+
+    List<QuestionsStore> list = questions!;
+    questions = list;
   }
 }
